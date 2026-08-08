@@ -2,7 +2,7 @@
   "manifest_version": "0.2",
   "name": "aircall",
   "display_name": "Aircall",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Connect Claude to Aircall: calls, transcripts, AI summaries, contacts, SMS, users, teams and more (83 tools).",
   "long_description": "Gives Claude access to your Aircall phone system via the Aircall Public API. Look up and search calls, read transcriptions, AI summaries, sentiments, topics and action items, manage contacts and tags, check agent availability, send SMS, and more.\n\nYou need an Aircall API ID and API Token, created in the Aircall Dashboard under Integrations & API → API Keys.",
   "author": {
