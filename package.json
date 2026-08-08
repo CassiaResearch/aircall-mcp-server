@@ -1,0 +1,89 @@
+{
+  "name": "@cassiaresearch/aircall-mcp-server",
+  "version": "2.0.0",
+  "description": "MCP server for the Aircall API - 83 tools for calls, transcriptions, AI insights, contacts, SMS, users, teams and more. Maintained by Cassia Research.",
+  "main": "dist/index.js",
+  "bin": {
+    "aircall-mcp": "dist/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "bundle": "npm install && npm run build && npm prune --omit=dev && npx -y @anthropic-ai/mcpb pack . aircall-mcp.mcpb && npm install",
+    "docs": "node scripts/generate-tool-docs.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "aircall",
+    "aircall-api",
+    "aircall-integration",
+    "phone-system",
+    "phone-api",
+    "telephony",
+    "sales",
+    "sales-automation",
+    "crm",
+    "crm-integration",
+    "voip",
+    "ai",
+    "ai-agent",
+    "ai-assistant",
+    "claude",
+    "claude-code",
+    "claude-desktop",
+    "cursor",
+    "anthropic",
+    "llm",
+    "llm-tools",
+    "typescript",
+    "sms",
+    "sms-api",
+    "calls",
+    "call-tracking",
+    "call-recording",
+    "call-transcription",
+    "contacts",
+    "webhooks",
+    "agentic",
+    "agent-toolkit",
+    "openai-functions",
+    "function-calling"
+  ],
+  "author": "Cassia Research (https://github.com/CassiaResearch)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CassiaResearch/aircall-mcp-server"
+  },
+  "bugs": {
+    "url": "https://github.com/CassiaResearch/aircall-mcp-server/issues"
+  },
+  "homepage": "https://github.com/CassiaResearch/aircall-mcp-server",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.2.0",
+    "eslint": "^10.8.1",
+    "typescript": "<6.1",
+    "typescript-eslint": "^8.66.0"
+  }
+}

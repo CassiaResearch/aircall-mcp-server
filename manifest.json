@@ -1,0 +1,61 @@
+{
+  "manifest_version": "0.2",
+  "name": "aircall",
+  "display_name": "Aircall",
+  "version": "2.0.0",
+  "description": "Connect Claude to Aircall: calls, transcripts, AI summaries, contacts, SMS, users, teams and more (83 tools).",
+  "long_description": "Gives Claude access to your Aircall phone system via the Aircall Public API. Look up and search calls, read transcriptions, AI summaries, sentiments, topics and action items, manage contacts and tags, check agent availability, send SMS, and more.\n\nYou need an Aircall API ID and API Token, created in the Aircall Dashboard under Integrations & API → API Keys.",
+  "author": {
+    "name": "Cassia Research",
+    "url": "https://github.com/CassiaResearch/aircall-mcp-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CassiaResearch/aircall-mcp-server"
+  },
+  "license": "MIT",
+  "keywords": ["aircall", "phone", "calls", "sms", "transcription", "telephony"],
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/index.js"],
+      "env": {
+        "AIRCALL_API_ID": "${user_config.api_id}",
+        "AIRCALL_API_TOKEN": "${user_config.api_token}",
+        "AIRCALL_READ_ONLY": "${user_config.read_only}"
+      }
+    }
+  },
+  "user_config": {
+    "api_id": {
+      "type": "string",
+      "title": "Aircall API ID",
+      "description": "From the Aircall Dashboard: Integrations & API → API Keys",
+      "required": true,
+      "sensitive": false
+    },
+    "api_token": {
+      "type": "string",
+      "title": "Aircall API Token",
+      "description": "The token shown when the API key is created",
+      "required": true,
+      "sensitive": true
+    },
+    "read_only": {
+      "type": "boolean",
+      "title": "Read-only mode",
+      "description": "Only allow reading data (no creating, updating, deleting, calling or messaging)",
+      "required": false,
+      "default": false
+    }
+  },
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  }
+}

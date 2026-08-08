@@ -1,0 +1,16 @@
+.git
+.github
+src
+docs
+.cursorrules
+.env.example
+.eslintrc.json
+tsconfig.json
+package-lock.json
+CLAUDE.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+SECURITY.md
+*.mcpb
+eslint.config.js
+scripts
