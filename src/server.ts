@@ -168,7 +168,7 @@ export class AircallMCPServer {
     this.server = new Server(
       {
         name: 'aircall-mcp-server',
-        version: '2.0.1',
+        version: '2.0.2',
       },
       {
         capabilities: {
@@ -329,6 +329,21 @@ export class AircallMCPServer {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
     console.error('Aircall MCP Server running on stdio');
+
+    // Non-blocking credential check: Aircall answers 403 (not 401) to bad
+    // auth, which reads like a permissions problem downstream. Surface a
+    // clear verdict in the log instead.
+    void this.client
+      .get('/ping')
+      .then(() => console.error('Aircall credentials verified (GET /v1/ping ok)'))
+      .catch((error) =>
+        console.error(
+          'AIRCALL CREDENTIAL CHECK FAILED - every tool call will fail. ' +
+            'Check the API ID and token in the extension settings, then fully quit ' +
+            'and reopen Claude Desktop (credentials are only read at startup). ' +
+            `Error: ${error instanceof Error ? error.message : String(error)}`
+        )
+      );
   }
 
   getToolCount(): number {

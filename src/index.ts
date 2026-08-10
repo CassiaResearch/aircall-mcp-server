@@ -24,7 +24,7 @@ function parseArgs(): AircallMCPConfig {
       printHelp();
       process.exit(0);
     } else if (arg === '--version' || arg === '-v') {
-      console.log('aircall-mcp-server v2.0.1');
+      console.log('aircall-mcp-server v2.0.2');
       process.exit(0);
     }
   }
