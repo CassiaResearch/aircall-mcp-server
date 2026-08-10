@@ -22,7 +22,8 @@ An **MCP (Model Context Protocol) server for the Aircall Public API**, maintaine
 2. When adding a tool, update ALL of: the tool factory in `src/tools/`, `TOOL_CATEGORIES` in `src/server.ts`, and `READ_ONLY_TOOLS` or `WRITE_TOOLS` in `src/types/aircall.ts`.
 3. Timestamps: always format with `toIso()` from `src/utils/format.ts`.
 4. After changes: `npm run build && npm run lint && npm run docs`, then bump the version in `package.json`, `manifest.json`, `src/server.ts`, and `src/index.ts` (all four must match) and `npm run bundle`.
-5. Tool annotations (`readOnlyHint`, `destructiveHint`, `title`) are computed in `server.ts#buildAnnotations` from the tool name and `READ_ONLY_TOOLS` — destructive means name matches `aircall_(delete|remove|update)_*`.
+5. To release: commit, then `git tag vX.Y.Z && git push origin main vX.Y.Z` — the release workflow (`.github/workflows/release.yml`) builds the `.mcpb` and attaches it to a GitHub Release (it fails if the tag doesn't match the manifest/package versions).
+6. Tool annotations (`readOnlyHint`, `destructiveHint`, `title`) are computed in `server.ts#buildAnnotations` from the tool name and `READ_ONLY_TOOLS` — destructive means name matches `aircall_(delete|remove|update)_*`.
 
 ## Quick Setup for Claude Desktop
 

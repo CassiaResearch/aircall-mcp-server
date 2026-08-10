@@ -1,0 +1,49 @@
+name: Release
+
+# Push a version tag to cut a release with the .mcpb attached:
+#   git tag v2.0.3 && git push origin v2.0.3
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Verify tag matches manifest version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          MANIFEST=$(node -p "require('./manifest.json').version")
+          PKG=$(node -p "require('./package.json').version")
+          if [ "$TAG" != "$MANIFEST" ] || [ "$TAG" != "$PKG" ]; then
+            echo "Tag v$TAG does not match manifest.json ($MANIFEST) or package.json ($PKG)"
+            exit 1
+          fi
+
+      - name: Build bundle
+        run: |
+          npm ci
+          npm run build
+          npm prune --omit=dev
+          npx -y @anthropic-ai/mcpb pack . aircall-mcp.mcpb
+
+      - name: Create release with bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" aircall-mcp.mcpb \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            --notes "Download \`aircall-mcp.mcpb\` below and double-click to install in Claude Desktop. After any credential change, fully quit and reopen Claude Desktop (⌘Q)."
