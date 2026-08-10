@@ -15,14 +15,17 @@ npm install            # install all deps (dev included)
 npm run build          # tsc -> dist/
 npm run dev            # tsc --watch
 npm start              # run the built server (needs AIRCALL_API_ID/AIRCALL_API_TOKEN)
-npm run lint           # eslint src (flat config, eslint 10)
+npm run lint           # eslint src (flat config, eslint 10) — 2 no-console warnings in
+                       # src/index.ts are EXPECTED (intentional CLI output); do not "fix" them
 npm run lint:fix       # eslint with autofix
 npm run typecheck      # tsc --noEmit
 npm run docs           # regenerate docs/tools/README.md from the BUILT server (build first)
-npm run bundle         # full pipeline: install -> build -> prune prod -> pack aircall-mcp.mcpb -> reinstall dev deps
+npm run bundle         # full pipeline: install -> build -> prune prod -> pack aircall-mcp.mcpb (~2.7MB) -> reinstall dev deps
 ```
 
-Local smoke test without an MCP client (fake creds are fine for `tools/list`):
+There is NO test suite (`npm test` does not exist). Verification is the stdio smoke test below —
+expect an initialize response naming `aircall-mcp-server` and a tools/list of 83 tools (36 in
+read-only mode with `AIRCALL_READ_ONLY=true`):
 
 ```bash
 (printf '%s\n' \
@@ -95,7 +98,7 @@ Annotations are derived, not declared: `server.ts#buildAnnotations` marks tools 
 
 ## Gotchas / Non-obvious Patterns
 
-- **Never trust existing code as API documentation.** Earlier iterations of this codebase contained ~20 endpoints that never existed. Verify every path, method, and response shape against the official reference (https://developer.aircall.io/api-references/ — Slate HTML; there is NO published OpenAPI spec) or the "Aircall Public API" Postman collection.
+- **Never trust existing code as API documentation.** Earlier iterations of this codebase contained ~20 endpoints that never existed. Verify every path, method, and response shape against the official reference (https://developer.aircall.io/api-references/ — Slate HTML; there is NO published OpenAPI spec) or the official Aircall Postman workspace (https://www.postman.com/aircall-tech-partnerships-team/aircall-api/overview).
 - **Aircall returns 403 (not 401) for bad credentials.** An all-tools-403 report almost always means wrong/stale credentials, not permissions. The server pings `/v1/ping` at startup and logs a verdict.
 - **Credentials are read only at process launch.** Changing them in Claude Desktop's extension settings does nothing until Claude Desktop is fully quit and reopened. This is written on the config form — keep it there.
 - **Claude Desktop stores `sensitive` user_config values encrypted** (`__encrypted_...` prefix) in `~/Library/Application Support/Claude/Claude Extensions Settings/<ext>.json`. Never edit that file's token by hand; it must go through the UI.
@@ -144,6 +147,7 @@ Manual MCP config alternative:
 ## Related
 
 - Official API reference: https://developer.aircall.io/api-references/
+- Official Postman workspace: https://www.postman.com/aircall-tech-partnerships-team/aircall-api/overview
 - Developer guides index: https://developer.aircall.io/llms.txt
 - Generated tool reference: docs/tools/README.md
 - Getting started guide: docs/guides/getting-started.md
